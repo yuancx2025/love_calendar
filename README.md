@@ -6,7 +6,30 @@ A real-time syncing calendar app for couples to track their special moments toge
   <img src="./asset/app.png" alt="Desktop View" width="60%"/>
 </div>
 
-## ✨ Features
+## 📁 Project Structure
+
+```
+calendar_love/
+├── src/
+│   ├── App.tsx                 # Main application component
+│   ├── main.tsx                # Entry point
+│   ├── firebase-config.ts      # Firebase configuration
+│   ├── index.css               # Global styles
+│   └── components/
+│       ├── Calendar.tsx        # Calendar view component
+│       ├── DayCounter.tsx      # Days together counter
+│       ├── EventList.tsx       # Event list sidebar
+│       ├── AddEventModal.tsx   # Add event modal
+│       ├── ImageGallery.tsx    # Photo gallery viewer
+│       └── SetupModal.tsx      # Initial setup modal
+├── firebase.json               # Firebase hosting config
+├── firestore.rules             # Database security rules
+├── firestore.indexes.json      # Firestore indexes
+├── vite.config.ts              # Vite build config
+├── package.json                # Dependencies
+└── env.example                 # Environment variables template
+```
+---
 
 # 🚀 Quick Start - Download & Setup
 
@@ -331,42 +354,6 @@ You successfully deployed a production-ready app with:
 **All for $0/month!**
 
 Enjoy your couples calendar! 💕
-
----
-
-## 📁 Project Structure
-
-```
-calendar_love/
-├── src/
-│   ├── App.tsx                 # Main application component
-│   ├── main.tsx                # Entry point
-│   ├── firebase-config.ts      # Firebase configuration
-│   ├── index.css               # Global styles
-│   └── components/
-│       ├── Calendar.tsx        # Calendar view component
-│       ├── DayCounter.tsx      # Days together counter
-│       ├── EventList.tsx       # Event list sidebar
-│       ├── AddEventModal.tsx   # Add event modal
-│       ├── ImageGallery.tsx    # Photo gallery viewer
-│       └── SetupModal.tsx      # Initial setup modal
-├── firebase.json               # Firebase hosting config
-├── firestore.rules             # Database security rules
-├── firestore.indexes.json      # Firestore indexes
-├── vite.config.ts              # Vite build config
-├── package.json                # Dependencies
-└── env.example                 # Environment variables template
-```
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ---
 
