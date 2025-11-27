@@ -1,0 +1,18 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Allow anyone to read and write events
+    // For a couples app with just 2 users, this is fine
+    // Later, you can add authentication and restrict to specific users
+    match /events/{eventId} {
+      allow read, write: if true;
+    }
+    
+    // Allow anyone to read and write settings
+    match /settings/{document} {
+      allow read, write: if true;
+    }
+  }
+}
