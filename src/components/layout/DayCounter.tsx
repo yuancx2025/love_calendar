@@ -1,5 +1,7 @@
+// src/components/layout/DayCounter.tsx
 import { useEffect, useState } from 'react';
 import { Calendar as CalendarIcon } from 'lucide-react';
+import { calculateDaysBetween, breakdownDays } from '@/lib/utils';
 
 interface DayCounterProps {
   startDate: string;
@@ -10,13 +12,7 @@ export function DayCounter({ startDate }: DayCounterProps) {
 
   useEffect(() => {
     const calculateDays = () => {
-      // Parse date string as local date to avoid timezone issues
-      const [year, month, day] = startDate.split('-').map(Number);
-      const start = new Date(year, month - 1, day);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Reset time to start of day
-      const diffTime = Math.abs(today.getTime() - start.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const diffDays = calculateDaysBetween(startDate);
       setDays(diffDays);
     };
 
@@ -26,10 +22,7 @@ export function DayCounter({ startDate }: DayCounterProps) {
     return () => clearInterval(interval);
   }, [startDate]);
 
-  const years = Math.floor(days / 365);
-  const remainingDays = days % 365;
-  const months = Math.floor(remainingDays / 30);
-  const finalDays = remainingDays % 30;
+  const { years, months, days: finalDays } = breakdownDays(days);
 
   return (
     <div className="bg-white rounded-2xl shadow-lg p-8 text-center border-2 border-pink-200">

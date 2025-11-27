@@ -1,6 +1,8 @@
+// src/components/calendar/Calendar.tsx
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
-import { Event } from '../App';
+import type { Event, EventType } from '@/types';
+import { createDateString } from '@/lib/utils';
 
 interface CalendarProps {
   events: Event[];
@@ -25,7 +27,7 @@ export function Calendar({ events, startDate, onDateClick, onAddEvent }: Calenda
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  const days = [];
+  const days: (number | null)[] = [];
   for (let i = 0; i < startingDayOfWeek; i++) {
     days.push(null);
   }
@@ -42,12 +44,12 @@ export function Calendar({ events, startDate, onDateClick, onAddEvent }: Calenda
   };
 
   const getEventsForDate = (day: number) => {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateStr = createDateString(year, month + 1, day);
     return events.filter(event => event.date === dateStr);
   };
 
   const isRelationshipStart = (day: number) => {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateStr = createDateString(year, month + 1, day);
     return dateStr === startDate;
   };
 
@@ -57,11 +59,11 @@ export function Calendar({ events, startDate, onDateClick, onAddEvent }: Calenda
   };
 
   const handleDayClick = (day: number) => {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateStr = createDateString(year, month + 1, day);
     onDateClick(dateStr);
   };
 
-  const getEventColor = (type: Event['type']) => {
+  const getEventColor = (type: EventType) => {
     switch (type) {
       case 'anniversary':
         return 'bg-red-500';

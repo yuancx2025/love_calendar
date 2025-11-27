@@ -1,5 +1,7 @@
+// src/components/layout/SetupModal.tsx
 import { useState, useEffect } from 'react';
 import { Heart } from 'lucide-react';
+import { getTodayString } from '@/lib/utils';
 
 interface SetupModalProps {
   isOpen: boolean;
@@ -14,8 +16,7 @@ export function SetupModal({ isOpen, onSetStartDate, currentStartDate }: SetupMo
     if (currentStartDate) {
       setDate(currentStartDate);
     } else {
-      const today = new Date().toISOString().split('T')[0];
-      setDate(today);
+      setDate(getTodayString());
     }
   }, [currentStartDate]);
 

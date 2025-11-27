@@ -11,24 +11,68 @@ A real-time syncing calendar app for couples to track their special moments toge
 ```
 calendar_love/
 ├── src/
-│   ├── App.tsx                 # Main application component
-│   ├── main.tsx                # Entry point
-│   ├── firebase-config.ts      # Firebase configuration
-│   ├── index.css               # Global styles
-│   └── components/
-│       ├── Calendar.tsx        # Calendar view component
-│       ├── DayCounter.tsx      # Days together counter
-│       ├── EventList.tsx       # Event list sidebar
-│       ├── AddEventModal.tsx   # Add event modal
-│       ├── ImageGallery.tsx    # Photo gallery viewer
-│       └── SetupModal.tsx      # Initial setup modal
-├── firebase.json               # Firebase hosting config
-├── firestore.rules             # Database security rules
-├── firestore.indexes.json      # Firestore indexes
-├── vite.config.ts              # Vite build config
-├── package.json                # Dependencies
-└── env.example                 # Environment variables template
+│   ├── App.tsx                    # Main application component
+│   ├── main.tsx                   # Entry point
+│   ├── index.css                  # Global styles (Tailwind)
+│   │
+│   ├── components/                # React components
+│   │   ├── index.ts               # Central exports
+│   │   ├── calendar/              # Calendar-related components
+│   │   │   ├── Calendar.tsx       # Calendar view component
+│   │   │   └── index.ts
+│   │   ├── events/                # Event-related components
+│   │   │   ├── AddEventModal.tsx  # Add event modal
+│   │   │   ├── EventList.tsx      # Event list sidebar
+│   │   │   ├── ImageGallery.tsx   # Photo gallery viewer
+│   │   │   └── index.ts
+│   │   ├── layout/                # Layout components
+│   │   │   ├── DayCounter.tsx     # Days together counter
+│   │   │   ├── SetupModal.tsx     # Initial setup modal
+│   │   │   └── index.ts
+│   │   └── ui/                    # Reusable UI components (shadcn/ui)
+│   │
+│   ├── hooks/                     # Custom React hooks
+│   │   ├── index.ts               # Central exports
+│   │   ├── useEvents.ts           # Event management hook
+│   │   └── useSettings.ts         # Settings management hook
+│   │
+│   ├── lib/                       # Utilities and configurations
+│   │   ├── firebase.ts            # Firebase configuration
+│   │   └── utils.ts               # Shared utility functions
+│   │
+│   ├── types/                     # TypeScript type definitions
+│   │   └── index.ts               # Centralized types (Event, etc.)
+│   │
+│   └── styles/                    # Additional styles
+│       └── globals.css            # CSS variables and theme
+│
+├── firebase.json                  # Firebase hosting config
+├── firestore.rules                # Database security rules
+├── firestore.indexes.json         # Firestore indexes
+├── vite.config.ts                 # Vite build config
+├── tsconfig.json                  # TypeScript configuration
+├── package.json                   # Dependencies
+└── env.example                    # Environment variables template
 ```
+
+## 🏗️ Architecture
+
+### Key Concepts
+
+- **Feature-based organization**: Components are grouped by feature (calendar, events, layout)
+- **Custom hooks**: Firebase logic is encapsulated in reusable hooks (`useEvents`, `useSettings`)
+- **Centralized types**: All TypeScript interfaces are in `src/types/index.ts`
+- **Path aliases**: Use `@/` to import from `src/` (e.g., `@/components`, `@/hooks`)
+
+### Data Flow
+
+```
+App.tsx
+  └── useEvents() hook → Firebase Firestore (real-time sync)
+  └── useSettings() hook → Firebase Firestore (settings)
+  └── Components render based on hook state
+```
+
 ---
 
 # 🚀 Quick Start - Download & Setup

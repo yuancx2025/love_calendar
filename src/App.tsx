@@ -1,133 +1,47 @@
 // src/App.tsx
-import { useState, useEffect } from 'react';
-import { 
-  collection, 
-  addDoc, 
-  deleteDoc, 
-  doc, 
-  onSnapshot,
-  setDoc,
-  getDoc,
-  query,
-  orderBy
-} from 'firebase/firestore';
-import { db } from './firebase-config';
-import { Calendar } from './components/Calendar';
-import { DayCounter } from './components/DayCounter';
-import { EventList } from './components/EventList';
-import { AddEventModal } from './components/AddEventModal';
-import { SetupModal } from './components/SetupModal';
+import { useState } from 'react';
 import { Heart, Settings } from 'lucide-react';
 
-export interface Event {
-  id: string;
-  date: string;
-  title: string;
-  description?: string;
-  type: 'anniversary' | 'date' | 'special' | 'other';
-  images?: string[];
-}
+// Import from new organized structure
+import { Calendar } from '@/components/calendar';
+import { EventList, AddEventModal } from '@/components/events';
+import { DayCounter, SetupModal } from '@/components/layout';
+import { useEvents, useSettings } from '@/hooks';
+import { formatFullDate } from '@/lib/utils';
+import type { NewEvent } from '@/types';
 
 export default function App() {
-  const [events, setEvents] = useState<Event[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSetupModalOpen, setIsSetupModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [relationshipStart, setRelationshipStart] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  // Load relationship start date from Firestore
-  useEffect(() => {
-    const loadStartDate = async () => {
-      try {
-        const settingsRef = doc(db, 'settings', 'main');
-        const settingsSnap = await getDoc(settingsRef);
-        
-        if (settingsSnap.exists()) {
-          const startDate = settingsSnap.data().relationshipStartDate;
-          setRelationshipStart(startDate);
-        } else {
-          setIsSetupModalOpen(true);
-        }
-      } catch (error) {
-        console.error('Error loading start date:', error);
-        setIsSetupModalOpen(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadStartDate();
-  }, []);
-
-  // Real-time listener for events
-  useEffect(() => {
-    const eventsQuery = query(
-      collection(db, 'events'),
-      orderBy('date', 'desc')
-    );
-
-    const unsubscribe = onSnapshot(
-      eventsQuery,
-      (snapshot) => {
-        const eventsData: Event[] = [];
-        snapshot.forEach((doc) => {
-          eventsData.push({
-            id: doc.id,
-            ...doc.data()
-          } as Event);
-        });
-        setEvents(eventsData);
-      },
-      (error) => {
-        console.error('Error loading events:', error);
-      }
-    );
-
-    // Cleanup subscription
-    return () => unsubscribe();
-  }, []);
+  // Use custom hooks for data management
+  const { events, addEvent, deleteEvent } = useEvents();
+  const { relationshipStart, loading, needsSetup, setStartDate } = useSettings();
 
   const handleSetStartDate = async (date: string) => {
     try {
-      const settingsRef = doc(db, 'settings', 'main');
-      await setDoc(settingsRef, {
-        relationshipStartDate: date
-      });
-      setRelationshipStart(date);
+      await setStartDate(date);
       setIsSetupModalOpen(false);
-    } catch (error) {
-      console.error('Error setting start date:', error);
+    } catch {
       alert('Failed to save start date. Please try again.');
     }
   };
 
-  const handleAddEvent = async (event: Omit<Event, 'id'>) => {
+  const handleAddEvent = async (event: NewEvent) => {
     try {
-      // Remove undefined fields - Firestore doesn't accept undefined values
-      const eventData: Record<string, unknown> = {
-        title: event.title,
-        date: event.date,
-        type: event.type,
-        createdAt: new Date().toISOString()
-      };
-      if (event.description) eventData.description = event.description;
-      if (event.images && event.images.length > 0) eventData.images = event.images;
-      
-      await addDoc(collection(db, 'events'), eventData);
+      await addEvent(event);
       setIsModalOpen(false);
       setSelectedDate(null);
-    } catch (error) {
-      console.error('Error adding event:', error);
+    } catch {
       alert('Failed to add event. Please try again.');
     }
   };
 
   const handleDeleteEvent = async (id: string) => {
     try {
-      await deleteDoc(doc(db, 'events', id));
-    } catch (error) {
-      console.error('Error deleting event:', error);
+      await deleteEvent(id);
+    } catch {
       alert('Failed to delete event. Please try again.');
     }
   };
@@ -137,6 +51,7 @@ export default function App() {
     setIsModalOpen(true);
   };
 
+  // Loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center">
@@ -148,29 +63,20 @@ export default function App() {
     );
   }
 
-  if (!relationshipStart && isSetupModalOpen) {
+  // Setup state - show setup modal
+  if (needsSetup && !relationshipStart) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
         <SetupModal
-          isOpen={isSetupModalOpen}
+          isOpen={true}
           onSetStartDate={handleSetStartDate}
         />
       </div>
     );
   }
 
+  // No relationship start date
   if (!relationshipStart) return null;
-
-  const formatStartDate = (dateStr: string) => {
-    // Parse as local date to avoid timezone issues
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const date = new Date(year, month - 1, day);
-    return date.toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
@@ -183,7 +89,7 @@ export default function App() {
             <Heart className="text-red-500 fill-red-500" size={32} />
           </div>
           <div className="flex items-center justify-center gap-2">
-            <p className="text-gray-600">Together since {formatStartDate(relationshipStart)}</p>
+            <p className="text-gray-600">Together since {formatFullDate(relationshipStart)}</p>
             <button
               onClick={() => setIsSetupModalOpen(true)}
               className="p-1 hover:bg-white/50 rounded-lg transition-colors"

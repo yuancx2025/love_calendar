@@ -1,11 +1,13 @@
+// src/components/events/AddEventModal.tsx
 import { useState, useEffect, useRef } from 'react';
-import { X, Upload, Image as ImageIcon } from 'lucide-react';
-import { Event } from '../App';
+import { X, Upload } from 'lucide-react';
+import type { EventType, NewEvent } from '@/types';
+import { getTodayString } from '@/lib/utils';
 
 interface AddEventModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddEvent: (event: Omit<Event, 'id'>) => void;
+  onAddEvent: (event: NewEvent) => void;
   preselectedDate: string | null;
 }
 
@@ -13,7 +15,7 @@ export function AddEventModal({ isOpen, onClose, onAddEvent, preselectedDate }: 
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState<Event['type']>('other');
+  const [type, setType] = useState<EventType>('other');
   const [images, setImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -21,8 +23,7 @@ export function AddEventModal({ isOpen, onClose, onAddEvent, preselectedDate }: 
     if (preselectedDate) {
       setDate(preselectedDate);
     } else {
-      const today = new Date().toISOString().split('T')[0];
-      setDate(today);
+      setDate(getTodayString());
     }
   }, [preselectedDate]);
 
@@ -145,7 +146,7 @@ export function AddEventModal({ isOpen, onClose, onAddEvent, preselectedDate }: 
             <select
               id="type"
               value={type}
-              onChange={(e) => setType(e.target.value as Event['type'])}
+              onChange={(e) => setType(e.target.value as EventType)}
               className="w-full px-4 py-2 border-2 border-pink-100 rounded-lg focus:outline-none focus:border-pink-300 transition-colors"
             >
               <option value="other">Other</option>

@@ -1,3 +1,4 @@
+// src/components/events/ImageGallery.tsx
 import { useState } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 

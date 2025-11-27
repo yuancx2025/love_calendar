@@ -1,6 +1,8 @@
+// src/components/events/EventList.tsx
 import { useState } from 'react';
-import { Trash2, Calendar as CalendarIcon, Heart, Image as ImageIcon } from 'lucide-react';
-import { Event } from '../App';
+import { Trash2, Calendar as CalendarIcon, Heart } from 'lucide-react';
+import type { Event, EventType, EventFilter } from '@/types';
+import { parseLocalDate, formatDate } from '@/lib/utils';
 import { ImageGallery } from './ImageGallery';
 
 interface EventListProps {
@@ -9,17 +11,11 @@ interface EventListProps {
 }
 
 export function EventList({ events, onDeleteEvent }: EventListProps) {
-  const [filter, setFilter] = useState<'all' | 'upcoming' | 'past'>('all');
+  const [filter, setFilter] = useState<EventFilter>('all');
   const [selectedEventImages, setSelectedEventImages] = useState<string[] | null>(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
-  // Helper function to parse YYYY-MM-DD as local date (not UTC)
-  const parseLocalDate = (dateStr: string): Date => {
-    const [year, month, day] = dateStr.split('-').map(Number);
-    return new Date(year, month - 1, day);
-  };
 
   const sortedEvents = [...events].sort((a, b) => {
     return parseLocalDate(b.date).getTime() - parseLocalDate(a.date).getTime();
@@ -36,17 +32,7 @@ export function EventList({ events, onDeleteEvent }: EventListProps) {
     return true;
   });
 
-  const formatDate = (dateStr: string) => {
-    // Parse as local date to avoid timezone issues
-    const date = parseLocalDate(dateStr);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
-
-  const getEventIcon = (type: Event['type']) => {
+  const getEventIcon = (type: EventType) => {
     switch (type) {
       case 'anniversary':
         return <Heart className="text-red-500 fill-red-500" size={18} />;
@@ -55,7 +41,7 @@ export function EventList({ events, onDeleteEvent }: EventListProps) {
     }
   };
 
-  const getEventColor = (type: Event['type']) => {
+  const getEventColor = (type: EventType) => {
     switch (type) {
       case 'anniversary':
         return 'border-red-200 bg-red-50';
