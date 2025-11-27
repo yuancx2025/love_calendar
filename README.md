@@ -1,57 +1,57 @@
-# 🎯 Step-by-Step Implementation Guide
+# 💕 Couples Calendar - Our Love Story
 
-**Time Required:** 15-20 minutes
-**Difficulty:** Easy (just follow the steps!)
+A beautiful, real-time syncing calendar app for couples to track their special moments together.
+
+**Live Demo:** https://couples-calendar-755cf.web.app
+
+## ✨ Features
+
+- 📅 Beautiful calendar view with event tracking
+- 💝 Track anniversaries, dates, and special moments
+- 📸 Add photos to your memories
+- 🔄 Real-time sync across all devices
+- ☁️ Cloud backup with Firebase
+- 📱 Works on desktop, tablet, and mobile
+- 🎨 Gorgeous pink/purple romantic theme
 
 ---
 
-## Step 1: Install Firebase (1 minute)
+# 🚀 Quick Start - Download & Setup
 
-Open terminal in your project directory:
+## Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [Git](https://git-scm.com/)
+- A Google account (for Firebase)
+
+---
+
+## Step 1: Clone from GitHub (1 minute)
+
+Open your terminal and run:
 
 ```bash
-npm install firebase
-npm install -g firebase-tools
+# Clone the repository
+git clone https://github.com/yuancx2025/calendar_love.git
+
+# Navigate into the project folder
+cd calendar_love
+
+# Install dependencies
+npm install
 ```
 
 ✅ **Checkpoint:** You see "added X packages" in terminal
 
 ---
 
-## Step 2: Copy New Files (2 minutes)
+## Step 2: Install Firebase CLI (1 minute)
 
-Copy these files from the downloads to your project:
-
-1. **firebase-config.ts**
-   - → Copy to `src/firebase-config.ts`
-
-2. **App.tsx**
-   - → **REPLACE** your existing `src/App.tsx`
-
-3. **firebase.json**
-   - → Copy to root directory (same level as package.json)
-
-4. **firestore.rules**
-   - → Copy to root directory
-
-5. **firestore.indexes.json**
-   - → Copy to root directory
-
-6. **.gitignore**
-   - → If you already have one, add the Firebase sections
-   - → If you don't have one, copy this file to root
-
-✅ **Checkpoint:** 
+```bash
+npm install -g firebase-tools
 ```
-your-project/
-├── src/
-│   ├── App.tsx              ← REPLACED
-│   └── firebase-config.ts   ← NEW
-├── firebase.json            ← NEW
-├── firestore.rules          ← NEW
-├── firestore.indexes.json   ← NEW
-└── .gitignore               ← UPDATED
-```
+
+✅ **Checkpoint:** Running `firebase --version` shows a version number
 
 ---
 
@@ -337,3 +337,51 @@ You successfully deployed a production-ready app with:
 **All for $0/month!**
 
 Enjoy your couples calendar! 💕
+
+---
+
+## 📁 Project Structure
+
+```
+calendar_love/
+├── src/
+│   ├── App.tsx                 # Main application component
+│   ├── main.tsx                # Entry point
+│   ├── firebase-config.ts      # Firebase configuration
+│   ├── index.css               # Global styles
+│   └── components/
+│       ├── Calendar.tsx        # Calendar view component
+│       ├── DayCounter.tsx      # Days together counter
+│       ├── EventList.tsx       # Event list sidebar
+│       ├── AddEventModal.tsx   # Add event modal
+│       ├── ImageGallery.tsx    # Photo gallery viewer
+│       └── SetupModal.tsx      # Initial setup modal
+├── firebase.json               # Firebase hosting config
+├── firestore.rules             # Database security rules
+├── firestore.indexes.json      # Firestore indexes
+├── vite.config.ts              # Vite build config
+├── package.json                # Dependencies
+└── env.example                 # Environment variables template
+```
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is open source and available under the MIT License.
+
+---
+
+## 💖 Made with Love
+
+Built for couples who want to cherish every moment together. 💕

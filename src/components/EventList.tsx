@@ -15,13 +15,18 @@ export function EventList({ events, onDeleteEvent }: EventListProps) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  // Helper function to parse YYYY-MM-DD as local date (not UTC)
+  const parseLocalDate = (dateStr: string): Date => {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  };
+
   const sortedEvents = [...events].sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
+    return parseLocalDate(b.date).getTime() - parseLocalDate(a.date).getTime();
   });
 
   const filteredEvents = sortedEvents.filter(event => {
-    const eventDate = new Date(event.date);
-    eventDate.setHours(0, 0, 0, 0);
+    const eventDate = parseLocalDate(event.date);
     
     if (filter === 'upcoming') {
       return eventDate >= today;
@@ -32,7 +37,8 @@ export function EventList({ events, onDeleteEvent }: EventListProps) {
   });
 
   const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
+    // Parse as local date to avoid timezone issues
+    const date = parseLocalDate(dateStr);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
