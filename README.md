@@ -1,8 +1,6 @@
 # 💕 Couples Calendar - Our Love Story
 
-A beautiful, real-time syncing calendar app for couples to track their special moments together.
-
-**Live Demo:** https://couples-calendar-755cf.web.app
+A real-time syncing calendar app for couples to track their special moments together.
 
 ## ✨ Features
 
@@ -17,6 +15,8 @@ A beautiful, real-time syncing calendar app for couples to track their special m
 ---
 
 # 🚀 Quick Start - Download & Setup
+
+> **Note:** Each user creates their own Firebase project and gets their own unique URL. Your data is completely private and separate from other users.
 
 ## Prerequisites
 
