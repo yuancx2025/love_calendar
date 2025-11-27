@@ -2,18 +2,6 @@
 
 A real-time syncing calendar app for couples to track their special moments together.
 
-## ✨ Features
-
-- 📅 Beautiful calendar view with event tracking
-- 💝 Track anniversaries, dates, and special moments
-- 📸 Add photos to your memories
-- 🔄 Real-time sync across all devices
-- ☁️ Cloud backup with Firebase
-- 📱 Works on desktop, tablet, and mobile
-- 🎨 Gorgeous pink/purple romantic theme
-
----
-
 # 🚀 Quick Start - Download & Setup
 
 > **Note:** Each user creates their own Firebase project and gets their own unique URL. Your data is completely private and separate from other users.
