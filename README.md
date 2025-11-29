@@ -3,7 +3,7 @@
 A real-time syncing calendar app for couples to track their special moments together.
 
 <div align="center">
-  <img src="./asset/app.png" alt="Desktop View" width="60%"/>
+  <img src="./public/app.png" alt="Desktop View" width="60%"/>
 </div>
 
 ## 📁 Project Structure
